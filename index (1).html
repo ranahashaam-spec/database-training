@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="BPO Wizard Database Training Document: a recruiting database and ATS/CRM playbook in 10 chapters.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2712%27 fill=%27%2316a870%27/%3E%3C/svg%3E">
+<title>Database Training Document</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout concept: a sticky branded header over a single reading column. Contents page is a card grid; each chapter is a stack of point boxes that open to definitions, examples (stair tabs) and flip cards. Every page ends in an animated green wave. The brand motif is the green dot from the BPO Wizard logo. */
+:root{
+  --bg:#ffffff;
+  --ink:#13201a;
+  --ink2:#3b4a43;
+  --muted:#64736c;
+  --line:#e0eae4;
+  --tint:#f0faf5;
+  --tint2:#dcf3e7;
+  --mint:#bfe3d0;
+  --green:#16a870;
+  --green-deep:#0a7b50;
+  --green-dark:#07553a;
+  --warn:#9a4a14;
+  --warn-tint:#fdf1e7;
+  --f-display:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px;border-radius:6px}
+.wrap{width:100%;max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap.narrow{max-width:880px}
+
+/* header */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.93);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:14px;height:64px}
+.logo{border:0;background:none;padding:0;display:flex;align-items:center;flex:none}
+.logo img{height:28px;width:auto;display:block}
+.hdr-t{margin-left:auto;font:500 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.hbtn{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:600 13px var(--f-body);transition:background .2s,color .2s,border-color .2s}
+.hbtn:hover{background:var(--green-deep);color:#fff;border-color:var(--green-deep)}
+.prog{position:absolute;left:0;bottom:-1px;height:3px;width:0;background:linear-gradient(90deg,var(--green),var(--green-deep))}
+@media (max-width:640px){.hdr-t{display:none}.hbtn{margin-left:auto}}
+
+.page{animation:pageIn .55s cubic-bezier(.2,.7,.2,1) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* cover */
+.cover{position:relative;padding-block:56px 36px;background:radial-gradient(circle at 88% 8%,var(--tint2),transparent 42%)}
+.eyebrow{display:flex;align-items:center;gap:10px;font:500 12px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--green-deep)}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--green);display:inline-block;flex:none;box-shadow:0 0 0 0 rgba(22,168,112,.5);animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(22,168,112,0)}100%{box-shadow:0 0 0 0 rgba(22,168,112,0)}}
+.cover h1{margin:20px 0 10px;font:700 clamp(38px,7vw,80px)/1.02 var(--f-display);letter-spacing:-.035em;text-wrap:balance;max-width:14ch}
+.cover h1 em{font-style:normal;color:var(--green-deep)}
+.cover h2{margin:0 0 14px;font:600 clamp(18px,2.4vw,24px)/1.3 var(--f-display);letter-spacing:-.01em;color:var(--ink2);text-wrap:balance}
+.cover .sub{max-width:58ch;color:var(--ink2);margin:0 0 28px;font-size:17px}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin:0 0 24px}
+.pillar{border-top:2px solid var(--green);padding-top:10px}
+.pillar small{display:block;font:500 11px var(--f-mono);letter-spacing:.14em;color:var(--muted)}
+.pillar b{font:600 18px var(--f-display)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:600}
+.sec-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin:44px 0 18px}
+.sec-h h3{margin:0;font:700 clamp(24px,3.4vw,34px)/1.15 var(--f-display);letter-spacing:-.02em;text-wrap:balance}
+.sec-h p{margin:0;color:var(--muted);max-width:60ch}
+
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
+.tcard{position:relative;display:flex;flex-direction:column;gap:10px;min-height:210px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:18px;padding:22px;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s}
+.tcard::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--tint),var(--tint2));transform:translateY(101%);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.tcard>*{position:relative}
+.tcard:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 16px 32px -16px rgba(10,123,80,.4)}
+.tcard:hover::before{transform:none}
+.tnum{font:600 13px var(--f-mono);color:var(--green-deep);display:flex;align-items:center;gap:8px}
+.tnum i{display:block;height:2px;width:22px;background:var(--green);transition:width .3s}
+.tcard:hover .tnum i{width:44px}
+.tt{font:600 19px/1.25 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.ts{color:var(--ink2);font-size:15px}
+.tgo{margin-top:auto;display:flex;align-items:center;gap:8px;font:600 13px var(--f-mono);color:var(--green-deep)}
+.tgo span{transition:transform .25s}
+.tcard:hover .tgo span{transform:translateX(6px)}
+.intro-end{margin:40px 0 0;padding:22px 24px;border-radius:18px;background:var(--tint);display:flex;flex-wrap:wrap;gap:6px 24px;align-items:center}
+.intro-end b{font:600 13px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep)}
+
+/* chapter */
+.ch-h{padding-block:44px 8px}
+.ch-h h2{margin:14px 0 8px;font:700 clamp(30px,5vw,52px)/1.08 var(--f-display);letter-spacing:-.03em;text-wrap:balance}
+.ch-h .lede{margin:0;font-size:18px;color:var(--ink2);max-width:60ch}
+.ch-h .intro{margin:14px 0 0;color:var(--ink2);max-width:68ch}
+.ch-tools{display:flex;gap:10px;margin:22px 0 18px;align-items:center;flex-wrap:wrap}
+.ch-tools span{font:500 12px var(--f-mono);color:var(--muted);letter-spacing:.06em}
+.pts{display:grid;gap:12px}
+
+.pt{border:1px solid var(--line);border-radius:16px;background:#fff;transition:border-color .25s,box-shadow .25s}
+.pt:hover{border-color:var(--mint)}
+.pt.open{border-color:var(--green);box-shadow:0 14px 32px -20px rgba(10,123,80,.45)}
+.pt-h{width:100%;display:flex;align-items:center;gap:14px;padding:18px 20px;background:none;border:0;text-align:left}
+.pt-mark{flex:none;width:13px;height:13px;border-radius:50%;border:2px solid var(--green);transition:background .25s,transform .25s}
+.pt.open .pt-mark{background:var(--green);transform:scale(1.15)}
+.pt-t{flex:1;min-width:0;font:600 clamp(17px,2.2vw,20px)/1.3 var(--f-display);letter-spacing:-.01em}
+.pt-k{font:500 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+@media (max-width:560px){.pt-k{display:none}}
+.chev{flex:none;color:var(--green-deep);transition:transform .3s}
+.pt.open>.pt-h .chev,.ex.open>.ex-h .chev{transform:rotate(180deg)}
+.pt-body{padding:2px 20px 22px;display:flex;flex-direction:column;gap:18px}
+@media (max-width:560px){.pt-h{padding:16px 14px}.pt-body{padding:2px 14px 18px}}
+
+.clp{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s cubic-bezier(.2,.7,.2,1)}
+.clp.open{grid-template-rows:1fr}
+.clp-in{min-height:0;overflow:hidden}
+.clp:not(.open)>.clp-in{visibility:hidden;transition:visibility 0s .38s}
+
+.pp{margin:0;max-width:68ch;color:var(--ink2)}
+.lbl{font:600 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 12px;border-radius:999px;background:var(--tint);border:1px solid var(--tint2);color:var(--green-dark);font-size:14px;font-weight:500;transition:background .2s,color .2s,transform .2s,border-color .2s}
+.chip:hover{background:var(--green-deep);color:#fff;border-color:var(--green-deep);transform:translateY(-2px)}
+.stack{display:flex;flex-direction:column;gap:10px}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.col{border-radius:14px;padding:16px 18px;background:var(--tint)}
+.col.warn{background:var(--warn-tint)}
+.col h4{margin:0 0 10px;font:600 12px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep)}
+.col.warn h4{color:var(--warn)}
+.col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.col li{display:flex;gap:10px;align-items:flex-start}
+.col li::before{content:"";flex:none;width:8px;height:8px;margin-top:9px;border-radius:50%;background:var(--green)}
+.col.warn li::before{background:#d9803f}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff;transition:transform .25s,border-color .25s,box-shadow .25s,background .25s}
+.card:hover{transform:translateY(-3px);border-color:var(--green);background:var(--tint);box-shadow:0 12px 24px -16px rgba(10,123,80,.45)}
+.card.warn{background:var(--warn-tint);border-color:#f0cfb3}
+.card h4{margin:0 0 4px;font:600 16px var(--f-display);letter-spacing:-.005em}
+.card p{margin:0;color:var(--ink2);font-size:15px}
+.card .cw{font:700 13px var(--f-mono);color:var(--green-deep);display:block;margin-bottom:6px}
+
+.ck{display:grid;gap:8px}
+.ck-i{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;transition:background .2s,border-color .2s,transform .2s}
+.ck-i:hover{border-color:var(--green);transform:translateX(3px)}
+.ck-i.on{background:var(--tint);border-color:var(--mint)}
+.ck-box{flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;border:2px solid var(--green);display:grid;place-items:center;color:#fff;transition:background .2s}
+.ck-i.on .ck-box{background:var(--green-deep);border-color:var(--green-deep)}
+.ck-box svg{opacity:0;transform:scale(.4);transition:opacity .2s,transform .2s}
+.ck-i.on .ck-box svg{opacity:1;transform:none}
+.ck-n{font:500 12px var(--f-mono);color:var(--muted)}
+
+.rows{display:grid;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:6px 18px;padding:12px 16px;border-top:1px solid var(--line);transition:background .2s}
+.row:first-child{border-top:0}
+.row:hover{background:var(--tint)}
+.row b{font:600 15px var(--f-display);color:var(--green-dark)}
+.row span{color:var(--ink2)}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+
+.note{border-radius:12px;padding:12px 16px;background:var(--tint);color:var(--ink2);font-size:15px}
+.note.todo{background:#fff;border:1.5px dashed var(--green);color:var(--green-dark)}
+.answer{border-radius:14px;padding:16px 18px;background:var(--green-deep);color:#fff}
+.answer b{display:block;font:600 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;opacity:.8;margin-bottom:4px}
+.answer p{margin:0;font-weight:500}
+.fig{margin:0}
+.fig img{width:100%;border-radius:14px;display:block}
+.fig figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+
+/* example box with stair tabs */
+.ex{border-radius:14px;background:var(--tint);border:1px solid var(--tint2)}
+.ex-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;background:none;border:0;text-align:left}
+.ex-tag{flex:none;font:600 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;background:var(--green-deep);color:#fff;padding:5px 10px;border-radius:6px}
+.ex-t{flex:1;min-width:0;font-weight:600}
+.ex-h:hover .ex-tag{background:var(--green)}
+.ex-body{padding:4px 16px 18px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:560px){.ex-h{padding:12px}.ex-body{padding:4px 12px 14px}}
+.stairs{list-style:none;margin:0;padding:0;display:grid;gap:8px;--step:20px}
+@media (max-width:560px){.stairs{--step:8px}}
+.stair{margin-left:calc(var(--i) * var(--step));min-width:0}
+.stair-b{width:100%;display:flex;gap:12px;align-items:center;text-align:left;padding:11px 14px;border:1px solid var(--tint2);border-bottom:4px solid var(--mint);border-radius:10px;background:#fff;transition:transform .2s,background .2s,color .2s,border-color .2s}
+button.stair-b:hover{transform:translateX(4px)}
+div.stair-b{cursor:default}
+.stair.on .stair-b{background:var(--green-deep);border-color:var(--green-deep);border-bottom-color:var(--green-dark);color:#fff}
+.sn{flex:none;width:26px;height:26px;border-radius:50%;background:var(--tint2);color:var(--green-dark);font:600 12px var(--f-mono);display:grid;place-items:center}
+.stair.on .sn{background:#fff;color:var(--green-deep)}
+.sl{font-weight:600;min-width:0}
+.stair-d{padding:10px 6px 4px 46px;color:var(--ink2)}
+.stair-d p{margin:0 0 8px}
+@keyframes stairIn{from{opacity:0;transform:translate(-20px,-12px)}to{opacity:1;transform:none}}
+.ex.open .stair,.pt.open .proc .stair{animation:stairIn .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 70ms)}
+
+.fun{display:grid;gap:8px}
+.fun-r{display:grid;grid-template-columns:100px 1fr 40px;gap:10px;align-items:center;font-size:14px}
+.fun-r b{font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:520px){.fun-r{grid-template-columns:78px 1fr 30px}}
+.trk{height:22px;background:#fff;border-radius:6px;border:1px solid var(--tint2);overflow:hidden}
+.bar{height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,var(--green),var(--green-deep));transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.ex.open .bar,.ex.open .seg{width:var(--w)}
+.split{display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid var(--tint2);background:#fff}
+.seg{width:0;transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.seg.a{background:var(--green-deep)}
+.seg.b{background:var(--mint)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:8px;font-size:14px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.cmp>div{background:#fff;border-radius:12px;padding:16px;border:1px solid var(--tint2)}
+.cmp .big{font:700 clamp(26px,4vw,36px)/1 var(--f-display);letter-spacing:-.02em}
+.cmp .bad .big{color:var(--warn)}
+.cmp .good .big{color:var(--green-deep)}
+.cmp small{display:block;color:var(--muted);margin:4px 0 10px;font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.cmp ul{margin:0;padding-left:18px;color:var(--ink2);font-size:15px}
+.grp .parent{display:inline-block;padding:8px 16px;background:var(--green-deep);color:#fff;border-radius:10px;font-weight:600}
+.grp .kids{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0 22px;padding-left:16px;border-left:2px solid var(--green)}
+
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:12px;perspective:1200px}
+.flip{padding:0;border:0;background:none;text-align:left;display:block;min-width:0}
+.flip-in{display:grid;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.3,.7,.2,1)}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{grid-area:1/1;display:flex;flex-direction:column;gap:8px;justify-content:space-between;min-height:132px;padding:16px 18px;border-radius:14px;-webkit-backface-visibility:hidden;backface-visibility:hidden;border:1px solid var(--line);transition:border-color .25s,box-shadow .25s}
+.front{background:#fff}
+.flip:hover .front{border-color:var(--green);box-shadow:0 12px 24px -16px rgba(10,123,80,.5)}
+.back{background:var(--green-deep);color:#fff;border-color:var(--green-deep);transform:rotateY(180deg);justify-content:flex-start}
+.flip-t{font:600 17px/1.25 var(--f-display)}
+.flip-h{font:500 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green-deep)}
+.back .flip-h{color:#a8ecd0;margin-top:auto}
+.bk{display:grid;gap:1px;font-size:14px}
+.bk small{font:600 10px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#a8ecd0}
+.bk span{font-weight:500}
+
+/* platform explorer */
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 15px;font:600 13px var(--f-body);transition:background .2s,color .2s,border-color .2s}
+.tab:hover{border-color:var(--green)}
+.tab[aria-pressed="true"]{background:var(--green-deep);color:#fff;border-color:var(--green-deep)}
+.plats{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}
+.pl{display:flex;flex-direction:column;gap:8px;align-items:flex-start;text-align:left;min-width:0;padding:16px;border:1px solid var(--line);border-radius:14px;background:#fff;transition:transform .25s,border-color .25s,box-shadow .25s}
+.pl:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 14px 26px -16px rgba(10,123,80,.5)}
+.pl-i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--tint2);color:var(--green-dark);font:700 18px var(--f-display);transition:background .25s,color .25s,transform .25s}
+.pl:hover .pl-i{background:var(--green-deep);color:#fff;transform:rotate(-8deg)}
+.pl-n{font:600 17px var(--f-display)}
+.pl-c{font:500 11px/1.4 var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.pl-g{margin-top:auto;font:600 12px var(--f-body);color:var(--green-deep)}
+.ov{position:fixed;inset:0;z-index:80;background:rgba(8,32,22,.45);animation:fade .25s both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{position:fixed;top:0;right:0;bottom:0;z-index:90;width:min(480px,100%);overflow-y:auto;background:#fff;box-shadow:-20px 0 50px -20px rgba(8,32,22,.45);padding:calc(24px + env(safe-area-inset-top,0px)) calc(24px + env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) 24px;animation:slide .35s cubic-bezier(.2,.7,.2,1) both;display:flex;flex-direction:column;gap:18px}
+@keyframes slide{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+.sheet-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.x{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;transition:background .2s,color .2s}
+.x:hover{background:var(--green-deep);color:#fff}
+.sheet h3{margin:0;font:700 32px/1.1 var(--f-display);letter-spacing:-.02em}
+.sheet dl{margin:0;display:grid;gap:14px}
+.sheet dt{font:600 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep);margin-bottom:3px}
+.sheet dd{margin:0;color:var(--ink2)}
+.sheet .tagx{display:grid;gap:8px}
+.sheet .tagx div{background:var(--tint);border-radius:10px;padding:10px 12px;font-size:15px}
+.sheet .tagx b{color:var(--green-dark)}
+.sheet-nav{display:flex;gap:10px;margin-top:auto}
+.sheet-nav button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px;transition:background .2s,border-color .2s}
+.sheet-nav button:hover{background:var(--tint);border-color:var(--green)}
+
+/* takeaway */
+.take{position:relative;overflow:hidden;margin-top:30px;padding:28px;border-radius:20px;background:var(--green-deep);color:#fff}
+.take::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.09)}
+.take small{font:600 11px var(--f-mono);letter-spacing:.18em;color:#a8ecd0}
+.take p{position:relative;z-index:1;margin:8px 0 0;font:600 clamp(20px,3vw,28px)/1.25 var(--f-display);letter-spacing:-.01em;max-width:34ch;text-wrap:balance}
+.take.long p{font:500 clamp(16px,2vw,19px)/1.55 var(--f-body);max-width:70ch}
+
+/* footer and wave */
+.pager{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+.pg{flex:1 1 240px;min-width:0;display:grid;gap:2px;text-align:left;border:1px solid var(--line);border-radius:14px;padding:14px 18px;background:#fff;transition:border-color .2s,background .2s,transform .2s}
+.pg.next{text-align:right}
+.pg:hover{border-color:var(--green);background:var(--tint);transform:translateY(-2px)}
+.pg small{font:500 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pg b{font:600 16px var(--f-display)}
+.waves{position:relative;height:clamp(90px,14vw,150px);margin-top:56px;overflow:hidden}
+.wv{position:absolute;left:0;bottom:-1px;width:200%;height:100%;animation:wave var(--d) linear infinite}
+.wv svg{display:block;width:100%;height:100%}
+@keyframes wave{to{transform:translateX(-50%)}}
+.wbase{background:var(--green-deep);color:#fff;padding-block:6px 20px}
+.wbase .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+.wbase span{opacity:.85}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .wv{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script>
+(function(){
+var LOGO="data:image/png;base64,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";
+var useState=React.useState, useEffect=React.useEffect, useRef=React.useRef;
+var html=htm.bind(React.createElement);
+var TOTAL=10;
+
+/* ---------- content ---------- */
+var CH=[
+{id:1,title:"Recruiting database — the concept",lede:"What a recruiting database is, why it matters, and why quality beats size.",
+ take:"What a recruiting database is, why it matters, and why quality beats size.",
+ sections:[
+ {id:"1a",title:"What is a recruiting database?",kicker:"Definition",blocks:[
+  {t:"p",text:"A structured collection of information about candidates and potential candidates, used for current and future hiring needs. More than résumés and contact details, it becomes a centralized source of recruiting information and candidate history."}]},
+ {id:"1b",title:"What a record can hold",kicker:"10 fields",blocks:[
+  {t:"chips",items:["Name and contact information","Current and previous companies and titles","Industry, skills and expertise","Location, education and certifications","Industry and candidate tags","Candidate status, pipelines and stages","Communication history","Previous jobs, applications and interviews","Recruiter ownership","Preferences, availability and candidate source"]}]},
+ {id:"1c",title:"Why it matters",kicker:"Value",blocks:[
+  {t:"cols",l:{title:"For recruiters",items:["Find relevant people faster","Search previous work","Understand interactions","Track follow-ups","Identify candidates for other roles","Build pipelines","Re-engage talent"]},
+   r:{title:"For the business",items:["Reduce repetitive sourcing","Preserve knowledge","Improve productivity","Support client delivery","Reduce dependence on personal memory"]}}]},
+ {id:"1d",title:"Previous work stays reusable",kicker:"Example",blocks:[
+  {t:"p",text:"Candidates who were not hired for one role often remain relevant to the next one."},
+  {t:"example",title:"100 Project Managers sourced",viz:{type:"split",parts:[{label:"10 hired",v:10,c:"a"},{label:"90 not hired",v:90,c:"b"}]},
+   steps:[{label:"Sourced",text:"100 Project Managers are sourced for a role."},{label:"Hired",text:"10 of them are hired."},{label:"Not hired",text:"90 are not hired."},{label:"Still useful",text:"Those 90 may remain relevant to future roles."}],
+   note:"These figures illustrate reuse. They are not measured performance claims."}]},
+ {id:"1e",title:"Talent mapping and pipeline building",kicker:"Concept",blocks:[
+  {t:"p",text:"Talent mapping organizes people by industry, function, company, geography, skills or seniority."},
+  {t:"chips",label:"Mapping example",items:["Private Equity","Investment Banking","Venture Capital","Asset Management"]},
+  {t:"p",text:"Pipeline building develops people for current or future opportunities."},
+  {t:"example",title:"An illustrative pipeline",viz:{type:"funnel",items:[["Identified",50],["Relevant",30],["Contacted",20],["Interested",12],["Suitable",8]]},
+   steps:[{text:"50 identified"},{text:"30 relevant"},{text:"20 contacted"},{text:"12 interested"},{text:"8 suitable"}]}]},
+ {id:"1f",title:"Advantages and risks",kicker:"Balance",blocks:[
+  {t:"cols",l:{title:"Advantages",items:["Reuse research","Retain conversations and preferences","Respond to clients faster","Maintain long-term relationships"]},
+   r:{title:"Risks",tone:"warn",items:["Outdated information","Duplicate records","Weak searchability","Unstructured notes"]}},
+  {t:"note",text:"Maintenance and quality control are ongoing responsibilities."}]},
+ {id:"1g",title:"Quality over quantity",kicker:"Example",blocks:[
+  {t:"p",text:"Usefulness, accuracy, relevance and searchability matter more than database count."},
+  {t:"example",title:"500,000 records or 100,000?",viz:{type:"compare",
+    a:{big:"500,000",small:"records",tone:"bad",items:["Duplicates","Outdated details","Poor classification","Little history"]},
+    b:{big:"100,000",small:"records",tone:"good",items:["Accurate","Maintained","Searchable","Clear history"]}},
+   steps:[{text:"A large database with duplicates, outdated details, poor classification and little history."},{text:"A smaller database of accurate, maintained, searchable records with clear history."},{text:"The smaller one is the more useful asset."}],
+   note:"Illustrative comparison from the training material."}]}
+ ]},
+
+{id:2,title:"ATS vs. recruiting CRM",lede:"ATS: who are we hiring right now? CRM: who might we hire now or in the future?",
+ take:"ATS: who are we hiring right now? CRM: who might we hire now or in the future?",
+ sections:[
+ {id:"2a",title:"How recruiting technology evolved",kicker:"Background",blocks:[
+  {t:"chips",label:"Where recruiters started",items:["Résumés","Email","Spreadsheets","Paper files","Separate notes"]},
+  {t:"p",text:"As hiring volumes grew, tracking became harder to organize. Recruiting software centralizes candidate information. Modern platforms may combine ATS and CRM; the distinction is primary purpose and workflow, not simply who is stored."}]},
+ {id:"2b",title:"ATS: Applicant Tracking System",kicker:"Definition",blocks:[
+  {t:"p",text:"An ATS manages the active hiring process, from the open position through to the hiring record."},
+  {t:"chips",label:"What an ATS manages",items:["Open positions and requisitions","Applications","Résumés","Screening","Candidate stages","Interviews","Feedback","Decisions","Hiring records"]},
+  {t:"note",text:"Search historical records before external sourcing, but review suitability and revalidate details rather than assuming an old candidate is still a fit."}]},
+ {id:"2c",title:"CRM: talent relationships",kicker:"Definition",blocks:[
+  {t:"p",text:"A recruiting CRM organizes the people you may want to hire, not only the people who applied."},
+  {t:"chips",label:"What a recruiting CRM organizes",items:["Talent pools","Passive candidates","Outreach history","Mapping","Future pipelines","Nurturing","Re-engagement"]},
+  {t:"note",text:"Valuable talent is not limited to applicants: an employed person, a past finalist or a previous contact may fit a future opportunity."}]},
+ {id:"2d",title:"Worked example: VP Finance",kicker:"Example",blocks:[
+  {t:"example",title:"One role, two perspectives",steps:[
+    {label:"ATS perspective",text:"Review current applicants, previous applicants, similar roles and interview history."},
+    {label:"CRM perspective",text:"Search passive VP Finance talent, existing pools, previous contacts and relationship history."},
+    {label:"Bringing them together",text:"A nurtured candidate can enter an active job workflow when the right role appears."}]}]},
+ {id:"2e",title:"Choosing a system",kicker:"Decision",blocks:[
+  {t:"cards",items:[
+   {title:"An ATS fits",text:"Job-led hiring with structured stages, feedback and decisions."},
+   {title:"A CRM fits",text:"Proactive recruiting, passive talent, mapping and long-term pipelines."},
+   {title:"Combined platforms",text:"Connect nurturing with active hiring and retain history in one place."}]}]},
+ {id:"2f",title:"ATS and CRM at a glance",kicker:"Tap to flip",blocks:[
+  {t:"flips",items:[
+   {title:"Primary purpose",back:[["ATS","Manage active hiring"],["Recruiting CRM","Manage talent relationships"]]},
+   {title:"Starting point",back:[["ATS","Job / requisition"],["Recruiting CRM","Candidate / talent"]]},
+   {title:"Main question",back:[["ATS","Who are we hiring?"],["Recruiting CRM","Who might we hire?"]]},
+   {title:"Passive candidates",back:[["ATS","May be included"],["Recruiting CRM","Major focus"]]},
+   {title:"Historical candidates",back:[["ATS","Useful to search"],["Recruiting CRM","Core talent pool"]]},
+   {title:"Nurturing",back:[["ATS","Secondary"],["Recruiting CRM","Major function"]]},
+   {title:"Pipeline",back:[["ATS","Usually job-specific"],["Recruiting CRM","Can be long-term"]]}]}]}
+ ]},
+
+{id:3,title:"How recruiters use databases",lede:"New job. Search existing talent. Review history. Engage. Track. Reuse.",
+ take:"New job. Search existing talent. Review history. Engage. Track. Reuse.",
+ sections:[
+ {id:"3a",title:"A repeatable recruiter workflow",kicker:"Process",blocks:[
+  {t:"stairs",steps:[
+   {text:"Start with a new requirement."},
+   {text:"Search pipelines and historical records."},
+   {text:"Review experience, notes and history."},
+   {text:"Re-engage suitable people, then source externally for gaps."},
+   {text:"Record conversations, follow-ups and stage changes."},
+   {text:"Keep the record useful for the next requirement."}]}]},
+ {id:"3b",title:"Worked example: a construction role",kicker:"Example",blocks:[
+  {t:"example",title:"Fifty Project Managers, six months later",steps:[
+   {label:"The role opens",text:"Six months after sourcing 50 Project Managers, a similar construction role opens."},
+   {label:"Search first",text:"Search those records before new sourcing."},
+   {label:"Review",text:"Review experience and notes, and decide who is worth re-engaging."},
+   {label:"Engage and fill gaps",text:"Contact suitable people and source remaining gaps."},
+   {label:"Record",text:"Record interest and stage changes so the next role starts with existing talent."}]}]}
+ ]},
+
+{id:4,title:"Database lifecycle",lede:"Eight stages, from sourcing to long-term reuse.",
+ take:"Eight stages, from sourcing to long-term reuse.",
+ sections:[
+ {id:"4a",title:"A continuous practice",kicker:"Concept",blocks:[
+  {t:"chips",items:["Source","Add","Enrich","Classify","Engage","Update","Reuse","Clean"]},
+  {t:"p",text:"This is not a one-way checklist: new information or a new requirement can trigger re-sourcing, re-enrichment, re-engagement or cleanup."}]},
+ {id:"4b",title:"One candidate through all eight stages",kicker:"Example",blocks:[
+  {t:"example",title:"A Senior Tax Manager",steps:[
+   {label:"Source",text:"Find a Senior Tax Manager on a professional network."},
+   {label:"Add",text:"Save a central record with the source URL."},
+   {label:"Enrich",text:"Verify employer, title, skills and work email."},
+   {label:"Classify",text:"Tag the record.",tags:["Tax","Senior Manager","Manufacturing","Passive"]},
+   {label:"Engage",text:"Log outreach, reply and follow-up."},
+   {label:"Update",text:"Confirm a promotion three months later."},
+   {label:"Reuse",text:"Search and review for a new tax role."},
+   {label:"Clean",text:"Merge a duplicate and correct an old email."}]}]},
+ {id:"4c",title:"Practical quality checklist",kicker:"Checklist",blocks:[
+  {t:"check",items:["Match the right person, not a name alone.","Separate current and previous employment.","Follow the team taxonomy.","Record source URL and capture or review date.","Label contact verification status.","Resolve or flag duplicates, conflicts and broken links.","Honor opt-outs.","Minimize sensitive data and restrict access."]}]},
+ {id:"4d",title:"Eight stages: action and outcome",kicker:"Tap to flip",blocks:[
+  {t:"flips",items:[
+   {title:"01 Source",back:[["Core question","Where is relevant talent?"],["Expected outcome","Candidate or lead"]]},
+   {title:"02 Add",back:[["Core question","How do we capture centrally?"],["Expected outcome","Traceable record and source"]]},
+   {title:"03 Enrich",back:[["Core question","What is missing or unverified?"],["Expected outcome","Checked professional profile"]]},
+   {title:"04 Classify",back:[["Core question","How will we find them later?"],["Expected outcome","Consistent fields and tags"]]},
+   {title:"05 Engage",back:[["Core question","How do we build the relationship?"],["Expected outcome","Outreach and next action logged"]]},
+   {title:"06 Update",back:[["Core question","What has changed?"],["Expected outcome","Current details and history"]]},
+   {title:"07 Reuse",back:[["Core question","Could they fit another role?"],["Expected outcome","Review before fresh sourcing"]]},
+   {title:"08 Clean",back:[["Core question","Is the record reliable?"],["Expected outcome","Duplicates and errors resolved"]]}]}]}
+ ]},
+
+{id:5,title:"Database quality",lede:"Accurate. Complete. Current. Searchable. Structured. Reusable.",
+ take:"Accurate. Complete. Current. Searchable. Structured. Reusable.",
+ sections:[
+ {id:"5a",title:"Six standards for a trusted record",kicker:"Standards",blocks:[
+  {t:"cards",items:[
+   {title:"Accurate",text:"Correct, verified and free from material errors."},
+   {title:"Complete",text:"Essential fields needed to evaluate and recruit."},
+   {title:"Current",text:"Reflects the latest professional situation."},
+   {title:"Searchable",text:"Discoverable through filters, keywords, tags or Boolean terms."},
+   {title:"Structured",text:"Defined fields and categories."},
+   {title:"Reusable",text:"Supports future hiring."}]}]},
+ {id:"5b",title:"What quality looks like in practice",kicker:"Checklist",blocks:[
+  {t:"check",items:["After a job change, verify employer and title.","Store email, profile, employer, skills, location and résumé, not only name and phone.","Update seniority and availability after promotion.","Ensure a Senior Java Developer search in Karachi, Banking, 5+ years can find relevant records.","Keep title, skills and industry in fields rather than buried in notes.","Retain useful feedback for future roles."]}]},
+ {id:"5c",title:"Why it matters",kicker:"Value",blocks:[
+  {t:"p",text:"Inaccurate data can waste outreach and weaken matching and reporting."},
+  {t:"note",text:"The aim is not merely to collect records, but to maintain information another recruiter can understand and reuse."}]}
+ ]},
+
+{id:6,title:"Searchability & taxonomy",lede:"How recruiters find people, and why standardized categories matter.",
+ take:"How recruiters find people, and why standardized categories matter.",
+ sections:[
+ {id:"6a",title:"Recruiter search criteria",kicker:"Reference",blocks:[
+  {t:"chips",label:"Search by",items:["Current or previous title","Industry","City or region","Remote and relocation preferences","Skills","Experience","Target company","Seniority","Certifications","Status","Previous activity"]},
+  {t:"chips",label:"Examples",items:["Financial Analyst","Python","Power BI","SAP","React","PMP","ACCA","CPA","CFA","AWS","SHRM"]}]},
+ {id:"6b",title:"Taxonomy: standardized titles and categories",kicker:"Concept",blocks:[
+  {t:"p",text:"Approved categories help recruiters find relevant people even when titles differ. They support matching, duplicate review, reporting and scalable management."},
+  {t:"example",title:"Three titles, one category",viz:{type:"group",parent:"Human Resources",kids:["HR Generalist","Human Resources Officer","HR Executive"]},
+   steps:[{text:"HR Generalist, Human Resources Officer and HR Executive can be grouped under Human Resources with approved sub-titles."}]}]},
+ {id:"6c",title:"Practical search example",kicker:"Example",blocks:[
+  {t:"chips",label:"Requirement",items:["Senior Java Developer","Karachi","Banking experience","5+ years"]},
+  {t:"example",title:"How the search runs",steps:[
+   {label:"Filter",text:"Combine structured title, location, industry, skills and experience filters."},
+   {label:"Review",text:"Review previous activity and notes."},
+   {label:"Verify",text:"Verify current fit and availability."}]},
+  {t:"note",tone:"todo",text:"To be added by the team: approved Boolean syntax and platform-specific search examples."}]}
+ ]},
+
+{id:7,title:"Database + sourcing",lede:"Every relevant search can become a long-term talent asset.",
+ take:"Every relevant search can become a long-term talent asset.",
+ sections:[
+ {id:"7a",title:"Capture today. Reuse tomorrow.",kicker:"Checklist",blocks:[
+  {t:"check",items:["Capture relevant candidates even when not selected.","Record job-related reasons for non-selection such as experience, compensation, location or specialization.","Add forward-looking tags.","Maintain relevant engagement and update records as people gain experience or move.","Search internally before new external sourcing."]}]},
+ {id:"7b",title:"Worked example: Java developer",kicker:"Example",blocks:[
+  {t:"example",title:"A near miss that pays off later",steps:[
+   {label:"The gap",text:"A Senior Java Developer lacks the required cloud experience."},
+   {label:"Keep the profile",text:"Keep the profile with forward-looking tags.",tags:["Java","Backend Developer","Future Cloud Role","Karachi"]},
+   {label:"Six months later",text:"A Java role with a lower cloud requirement opens."},
+   {label:"Reuse",text:"The record can be reviewed and reused."}]}]},
+ {id:"7c",title:"Long-term value by source",kicker:"6 sources",blocks:[
+  {t:"cards",items:[
+   {title:"Job boards",text:"Can create searchable records for similar roles."},
+   {title:"Professional networks",text:"Can build active and passive pools."},
+   {title:"Referrals",text:"Can support future requirements."},
+   {title:"Career fairs",text:"Can build early-career pipelines."},
+   {title:"Talent communities",text:"Maintain relationships."},
+   {title:"Rejected-candidate follow-up",text:"Gives closure while preserving strong future talent."}]}]}
+ ]},
+
+{id:8,title:"Database + candidate relationships",lede:"Store the relationship, not just the record.",
+ take:"Store the relationship, not just the record.",
+ sections:[
+ {id:"8a",title:"History that survives handovers",kicker:"Records",blocks:[
+  {t:"p",text:"Keep roles, applications, interviews, conversations and outcomes together."},
+  {t:"chips",label:"Record each time",items:["Date","Channel","Role or talent pool","Response","Agreed next action","Follow-up date","Preferences","Availability","Job-related reason for non-selection"]},
+  {t:"note",text:"Notes should be concise, factual and understandable to another recruiter."}]},
+ {id:"8b",title:"Segmentation and nurturing",kicker:"5 groups",blocks:[
+  {t:"cards",items:[
+   {title:"Active candidates",text:"Need prompt role-specific updates."},
+   {title:"Passive talent",text:"Benefits from occasional relevant touchpoints."},
+   {title:"Silver medalists",text:"Can be reconsidered for similar roles."},
+   {title:"Industry and function pools",text:"Can receive relevant openings or market information."},
+   {title:"Do Not Contact",tone:"warn",text:"Means no outreach. Keep the flag visible to permitted users."}]}]},
+ {id:"8c",title:"Re-engagement example: a silver medalist",kicker:"Example",blocks:[
+  {t:"example",title:"A Senior Accountant finalist",steps:[
+   {label:"Not chosen",text:"A Senior Accountant finalist was not chosen because another candidate had more direct industry experience."},
+   {label:"Six months later",text:"Search interview history for a similar opening."},
+   {label:"Check",text:"Check current details, review feedback and contact the candidate if appropriate."},
+   {label:"Reassess",text:"Reassess skills, interest and availability."},
+   {label:"Respect the answer",text:"Silence is not interest. Stop after an opt-out."}]}]}
+ ]},
+
+{id:9,title:"Major ATS/CRM platforms",lede:"Understand the recruiting problem, not just the feature list.",
+ take:"Understand the recruiting problem, not just the feature list.",
+ sections:[
+ {id:"9a",title:"Three overlapping categories",kicker:"Concept",blocks:[
+  {t:"cards",items:[
+   {title:"ATS",text:"Manages requisition through screening, interviews, selection and hiring."},
+   {title:"Recruiting CRM",text:"Maintains relationships with talent and other recruiting stakeholders."},
+   {title:"Talent intelligence",text:"Supports discovery, enrichment, segmentation and analysis using external data, automation or AI."}]},
+  {t:"note",text:"Modern platforms may combine categories."}]},
+ {id:"9b",title:"13 platforms: training reference",kicker:"Tap a platform",blocks:[
+  {t:"note",text:"The classifications reproduce the supplied training material. They are starting points, not independent rankings. Functionality depends on edition, modules, integrations and contract."},
+  {t:"platforms"},
+  {t:"note",tone:"todo",text:"To be added by the team: current vendor documentation and review dates before relying on individual capabilities."}]},
+ {id:"9c",title:"AI in ATS and CRM",kicker:"Capabilities",blocks:[
+  {t:"chips",label:"Potential uses",items:["Sourcing by professional criteria","Résumé parsing and enrichment","Matching against requirements","Drafting outreach","Summarizing calls","Suggesting follow-ups","Analyzing pipeline bottlenecks"]},
+  {t:"note",text:"These are capability examples, not guarantees that every platform includes them. Human review remains important for consequential candidate decisions."}]},
+ {id:"9d",title:"Integration methods",kicker:"5 methods",blocks:[
+  {t:"cards",items:[
+   {title:"Native connectors",text:"Vendor or partner integrations."},
+   {title:"APIs",text:"Enable documented custom exchanges."},
+   {title:"Webhooks",text:"Notify other systems about events."},
+   {title:"Middleware",text:"Tools such as Zapier can connect supported applications."},
+   {title:"AI connectors",text:"Connectors such as MCP can expose permitted data or approved actions."}]},
+  {t:"note",text:"Confirm availability, licensing, permissions, field mapping, retention and support boundaries."}]},
+ {id:"9e",title:"Example: research connected to an ATS",kicker:"Example",blocks:[
+  {t:"example",title:"From sourcing to a controlled record",steps:[
+   {label:"Source",text:"Source through approved channels."},
+   {label:"Research",text:"Use AI-assisted research to extract details, summarize experience and flag missing fields."},
+   {label:"Verify",text:"Verify sources, employment, contacts and duplicates."},
+   {label:"Record",text:"Create or update authorized fields with source links, status and notes."},
+   {label:"Follow through",text:"Assign to a job, schedule follow-ups and track outcomes."},
+   {label:"Keep control",text:"AI assists; the ATS/CRM retains the controlled recruiting record."}]}]},
+ {id:"9f",title:"Data flow guardrails",kicker:"Reference",blocks:[
+  {t:"rows",items:[["Sourcing platforms","May provide profile URLs and professional details."],["Contact tools","Business-contact data."],["Email services","Verification status and date."],["AI assistants","Draft summaries."],["Calendars","Interview status."],["Assessment tools","Results."],["Reporting tools","Funnel metrics."]]},
+  {t:"note",text:"Not every tool supports every flow. Minimize personal-data transfer and check connectors, documentation, licensing and permissions."}]},
+ {id:"9g",title:"Final learning points",kicker:"Summary",blocks:[
+  {t:"check",items:["The database is an operational asset.","ATS and CRM solve different but connected problems.","AI depends on data quality.","Integrations require governed sync rules, permissions, validation and duplicate management.","Choose tools for the business model: corporate hiring, agencies, executive search and workforce planning differ."]},
+  {t:"chips",items:["Recruiting concept first.","Workflow second.","Technology third."]}]}
+ ]},
+
+{id:10,title:"Practical Recruiting Scenarios",sub:"Applying ATS/CRM and Recruiting Database Knowledge",
+ lede:"Apply ATS/CRM knowledge to five day-to-day recruiting situations, with practical steps.",
+ intro:"This section explains how recruiters use a recruiting database or ATS/CRM to handle common day-to-day situations. The objective is to follow a consistent process, maintain accurate candidate records, and make effective use of existing talent before starting new sourcing.",
+ long:true,
+ take:"A recruiting database is more than a place to store resumes. It helps recruiters reuse existing talent, preserve relationship history, avoid duplicate work, run structured searches, and maintain accurate records. Every action should follow the organization’s process, respect candidate preferences and privacy requirements, and leave a clear record of the decision or next step.",
+ sections:[
+ {id:"10a",title:"What should a recruiter check in the database when a new job comes in?",kicker:"Scenario 1",blocks:[
+  {t:"answer",text:"Search for existing candidates using relevant job titles, skills, industry, and location. Review resumes, recruiter notes, previous submissions, and candidate availability before starting new sourcing."},
+  {t:"lbl",text:"Practical steps"},
+  {t:"stairs",steps:[{text:"Confirm the role requirements, essential skills, seniority, industry experience, and location."},{text:"Search the existing database using job titles, related titles, keywords, Boolean search, and available filters."},{text:"Review resumes, employment history, recruiter notes, previous submissions, contact details, and last-contact dates."},{text:"Check candidate interest and availability, and confirm that profile information is current."},{text:"Shortlist suitable candidates and record the search or screening outcome before sourcing externally."}]}]},
+ {id:"10b",title:"What happens to a candidate who is not right for the current role?",kicker:"Scenario 2",blocks:[
+  {t:"answer",text:"Update their profile with relevant notes, skills, and preferences. Keep them in the talent pipeline for future opportunities instead of discarding them."},
+  {t:"lbl",text:"Practical steps"},
+  {t:"stairs",steps:[{text:"Record the role-specific reason they were not selected, using factual and job-related notes."},{text:"Capture relevant skills, experience, location preferences, salary expectations if appropriately collected, and career interests."},{text:"Update the candidate’s status according to the organization’s process, such as “not suitable for this role” or “future opportunity.”"},{text:"Retain the candidate in an appropriate talent pool when permitted and useful."},{text:"Respect candidate communication preferences, consent, and data-retention rules before future outreach."}]}]},
+ {id:"10c",title:"How should potential duplicates be handled?",kicker:"Scenario 3",blocks:[
+  {t:"answer",text:"Verify duplicates using names, emails, phone numbers, and LinkedIn profiles. Merge confirmed duplicates according to database procedures while preserving important candidate information and communication history."},
+  {t:"lbl",text:"Practical steps"},
+  {t:"stairs",steps:[{text:"Compare identifiers such as email addresses, phone numbers, LinkedIn URLs, employment history, and location; a matching name alone is not sufficient."},{text:"Open both records and check whether they represent the same person or two different people with similar names."},{text:"Follow the organization’s duplicate-resolution procedure and use the platform’s merge function only when the match is confirmed and the user has the required permissions."},{text:"Preserve useful notes, source links, activity history, submissions, and communication records during the merge."},{text:"If the match is uncertain, flag the records for review rather than deleting either profile."}]}]},
+ {id:"10d",title:"How would a recruiter search for 10 Project Managers in a market?",kicker:"Scenario 4",blocks:[
+  {t:"answer",text:"Use job titles, Boolean searches, industry keywords, and location filters. Review candidate profiles, shortlist 10 qualified Project Managers, and initiate targeted outreach."},
+  {t:"lbl",text:"Practical steps"},
+  {t:"stairs",steps:[{text:"Clarify the market: target location or region, industry, seniority, project type, and essential qualifications."},{text:"Search for title variations such as “Project Manager,” “Senior Project Manager,” and relevant industry-specific titles."},{text:"Combine Boolean terms and filters. For example: (“Project Manager” OR “Program Manager”) AND (construction OR infrastructure), then apply the appropriate location and experience filters."},{text:"Review each profile for project scope, industry relevance, skills, career history, qualifications, and comparable responsibilities."},{text:"Validate the shortlist against job requirements, check for duplicates and current contact details, and select the 10 strongest matches."},{text:"Record search criteria and outreach status in the ATS/CRM so the process is repeatable and auditable."}]}]},
+ {id:"10e",title:"How can a previous candidate be re-engaged months later?",kicker:"Scenario 5",blocks:[
+  {t:"answer",text:"Review previous conversations and feedback, check their current professional status, and send a personalized follow-up about a relevant opportunity. Update their information in the database."},
+  {t:"lbl",text:"Practical steps"},
+  {t:"stairs",steps:[{text:"Review the candidate’s previous application, interview feedback, recruiter notes, interests, and last conversation."},{text:"Verify current employment, role, location, and other relevant professional details using appropriate sources."},{text:"Check whether the candidate’s preferences and communication permissions allow contact."},{text:"Send a concise, personalized message explaining why the opportunity may fit their experience or stated interests."},{text:"Record the outreach date, channel, response, and next follow-up action in the ATS/CRM."},{text:"If the candidate is not interested, update their preferences and follow-up status respectfully."}]}]}
+ ]}
+];
+
+var CAT_ATS="Manages requisition through screening, interviews, selection and hiring.";
+var CAT_CRM="Maintains relationships with talent and other recruiting stakeholders.";
+var CAT_INT="Supports discovery, enrichment, segmentation and analysis using external data, automation or AI.";
+var TAGX={"ATS":CAT_ATS,"CRM":CAT_CRM,"Talent intelligence":CAT_INT};
+var GROUPS={
+ "Enterprise suite":"Examples include cross-country hiring approvals, segmented accountant pools and different graduate or executive processes.",
+ "Corporate and growth":"Recruiter examples include scorecards, funnel review, future leadership pools, outreach follow-ups and proactive tax-specialist pipelines.",
+ "Agency":"Verify current functionality against official documentation."
+};
+var PLAT=[
+ {name:"Workday",cat:"ATS + enterprise HCM",users:"Large organizations",group:"Enterprise suite",tags:["ATS"],emph:"Connects recruiting with HR systems."},
+ {name:"Greenhouse",cat:"ATS",users:"Growing and large employers",group:"Corporate and growth",tags:["ATS"],emph:"Emphasizes structured evaluation."},
+ {name:"iCIMS",cat:"ATS + talent acquisition",users:"Mid-market and enterprise",group:"Enterprise suite",tags:["ATS"],emph:"Supports broad talent acquisition and reusable pools."},
+ {name:"SmartRecruiters",cat:"ATS + talent acquisition",users:"Mid-market and enterprise",group:"Enterprise suite",tags:["ATS"],emph:"Emphasizes connected hiring workflows."},
+ {name:"Ashby",cat:"ATS + analytics + CRM",users:"Tech and scaling teams",group:"Corporate and growth",tags:["ATS","CRM"],emph:"Emphasizes recruiting analytics."},
+ {name:"Lever",cat:"ATS + CRM",users:"Growing and enterprise",group:"Corporate and growth",tags:["ATS","CRM"],emph:"Combines ATS and CRM."},
+ {name:"Bullhorn",cat:"ATS + staffing CRM",users:"Staffing agencies",group:"Agency",tags:["ATS","CRM"],emph:"Connects client jobs, submissions and placements."},
+ {name:"Crelate",cat:"ATS + CRM",users:"Recruiters and search firms",group:"Agency",tags:["ATS","CRM"],emph:"Supports search-firm workflows and history."},
+ {name:"Loxo",cat:"ATS + CRM + sourcing",users:"Recruiters and search firms",group:"Agency",tags:["ATS","CRM"],emph:"Combines discovery and recruiting workflows."},
+ {name:"Avature",cat:"Enterprise ATS + CRM",users:"Global enterprises",group:"Enterprise suite",tags:["ATS","CRM"],emph:"Supports configurable global workflows."},
+ {name:"Gem",cat:"CRM + sourcing analytics",users:"Corporate talent teams",group:"Corporate and growth",tags:["CRM"],emph:"Nurturing and sourcing analytics."},
+ {name:"Beamery",cat:"Talent CRM + intelligence",users:"Large enterprises",group:"Corporate and growth",tags:["CRM","Talent intelligence"],emph:"Skills-led talent pools."},
+ {name:"Recruit CRM",cat:"ATS + CRM",users:"Recruitment agencies",group:"Agency",tags:["ATS","CRM"],emph:"Consolidates agency ATS/CRM operations."}
+];
+
+/* ---------- small components ---------- */
+function Chev(){return html`<svg className="chev" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>`;}
+function Tick(){return html`<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>`;}
+
+function Collapse(p){
+  return html`<div className=${"clp"+(p.open?" open":"")}><div className="clp-in">${p.children}</div></div>`;
+}
+
+function Stairs(p){
+  var steps=p.steps, hasLabel=steps.some(function(s){return s.label;});
+  var st=useState(hasLabel?0:-1), act=st[0], setAct=st[1];
+  return html`<ol className=${"stairs"+(p.proc?" proc":"")}>${steps.map(function(s,i){
+    var on=act===i;
+    var tags=s.tags?html`<div className="chips">${s.tags.map(function(t){return html`<span className="chip" key=${t}>${t}</span>`;})}</div>`:null;
+    if(s.label){
+      return html`<li key=${i} className=${"stair"+(on?" on":"")} style=${{"--i":i}}>
+        <button type="button" className="stair-b" aria-expanded=${on} onClick=${function(){setAct(on?-1:i);}}>
+          <span className="sn">${i+1}</span><span className="sl">${s.label}</span>
+        </button>
+        <${Collapse} open=${on}><div className="stair-d"><p>${s.text}</p>${tags}</div><//>
+      </li>`;
+    }
+    return html`<li key=${i} className="stair" style=${{"--i":i}}>
+      <div className="stair-b"><span className="sn">${i+1}</span><span className="sl" style=${{fontWeight:500}}>${s.text}</span></div>
+    </li>`;
+  })}</ol>`;
+}
+
+function Viz(p){
+  var v=p.v;
+  if(v.type==="funnel"){
+    var max=v.items[0][1];
+    return html`<div className="fun">${v.items.map(function(it,i){
+      return html`<div className="fun-r" key=${i}><span>${it[0]}</span><div className="trk"><div className="bar" style=${{"--w":(it[1]/max*100)+"%",transitionDelay:(i*90)+"ms"}}></div></div><b>${it[1]}</b></div>`;
+    })}</div>`;
+  }
+  if(v.type==="split"){
+    return html`<div><div className="split">${v.parts.map(function(pt,i){return html`<div key=${i} className=${"seg "+pt.c} style=${{"--w":pt.v+"%"}}></div>`;})}</div>
+      <div className="legend">${v.parts.map(function(pt,i){return html`<span key=${i}><i style=${{background:pt.c==="a"?"var(--green-deep)":"var(--mint)"}}></i>${pt.label}</span>`;})}</div></div>`;
+  }
+  if(v.type==="compare"){
+    var side=function(o){return html`<div className=${o.tone}><div className="big">${o.big}</div><small>${o.small}</small><ul>${o.items.map(function(x){return html`<li key=${x}>${x}</li>`;})}</ul></div>`;};
+    return html`<div className="cmp">${side(v.a)}${side(v.b)}</div>`;
+  }
+  if(v.type==="group"){
+    return html`<div className="grp"><span className="parent">${v.parent}</span><div className="kids">${v.kids.map(function(k){return html`<span className="chip" key=${k}>${k}</span>`;})}</div></div>`;
+  }
+  return null;
+}
+
+function Example(p){
+  var st=useState(false), open=st[0], setOpen=st[1];
+  return html`<div className=${"ex"+(open?" open":"")}>
+    <button type="button" className="ex-h" aria-expanded=${open} onClick=${function(){setOpen(!open);}}>
+      <span className="ex-tag">Example</span><span className="ex-t">${p.b.title}</span><${Chev}/>
+    </button>
+    <${Collapse} open=${open}>
+      <div className="ex-body">
+        ${p.b.viz?html`<${Viz} v=${p.b.viz}/>`:null}
+        <${Stairs} steps=${p.b.steps}/>
+        ${p.b.note?html`<div className="note">${p.b.note}</div>`:null}
+      </div>
+    <//>
+  </div>`;
+}
+
+function Check(p){
+  var st=useState({}), on=st[0], setOn=st[1];
+  var n=p.items.filter(function(_,i){return on[i];}).length;
+  return html`<div className="stack"><div className="ck">${p.items.map(function(t,i){
+    return html`<button type="button" key=${i} className=${"ck-i"+(on[i]?" on":"")} aria-pressed=${!!on[i]} onClick=${function(){var c=Object.assign({},on);c[i]=!c[i];setOn(c);}}>
+      <span className="ck-box"><${Tick}/></span><span>${t}</span></button>`;
+  })}</div><span className="ck-n">${n} of ${p.items.length} reviewed. Tap a point to tick it off.</span></div>`;
+}
+
+function Flips(p){
+  var st=useState({}), on=st[0], setOn=st[1];
+  return html`<div className="flips">${p.items.map(function(it,i){
+    return html`<button type="button" key=${i} className=${"flip"+(on[i]?" on":"")} aria-pressed=${!!on[i]} onClick=${function(){var c=Object.assign({},on);c[i]=!c[i];setOn(c);}}>
+      <span className="flip-in">
+        <span className="face front"><span className="flip-t">${it.title}</span><span className="flip-h">Tap to reveal details</span></span>
+        <span className="face back">${it.back.map(function(r){return html`<span className="bk" key=${r[0]}><small>${r[0]}</small><span>${r[1]}</span></span>`;})}<span className="flip-h">Turn back</span></span>
+      </span></button>`;
+  })}</div>`;
+}
+
+function Explorer(){
+  var a=useState("All"), g=a[0], setG=a[1];
+  var b=useState(null), sel=b[0], setSel=b[1];
+  var list=PLAT.filter(function(x){return g==="All"||x.group===g;});
+  useEffect(function(){
+    if(sel===null)return;
+    var prev=document.body.style.overflow;
+    document.body.style.overflow="hidden";
+    function k(e){if(e.key==="Escape")setSel(null);}
+    window.addEventListener("keydown",k);
+    return function(){document.body.style.overflow=prev;window.removeEventListener("keydown",k);};
+  },[sel]);
+  var p=sel===null?null:PLAT[sel];
+  function step(d){
+    var idx=list.findIndex(function(x){return x===PLAT[sel];});
+    if(idx<0){setSel(PLAT.indexOf(list[0]));return;}
+    setSel(PLAT.indexOf(list[(idx+d+list.length)%list.length]));
+  }
+  var groupNames=["All","Enterprise suite","Corporate and growth","Agency"];
+  return html`<div className="stack">
+    <div className="tabs" role="group" aria-label="Filter platforms">${groupNames.map(function(n){return html`<button type="button" key=${n} className="tab" aria-pressed=${g===n} onClick=${function(){setG(n);}}>${n}</button>`;})}</div>
+    ${g!=="All"?html`<div className="note">${GROUPS[g]}</div>`:null}
+    <div className="plats">${list.map(function(x){
+      return html`<button type="button" key=${x.name} className="pl" onClick=${function(){setSel(PLAT.indexOf(x));}}>
+        <span className="pl-i">${x.name.charAt(0)}</span><span className="pl-n">${x.name}</span><span className="pl-c">${x.cat}</span><span className="pl-g">${x.group}</span></button>`;
+    })}</div>
+    ${p?html`<div><div className="ov" onClick=${function(){setSel(null);}}></div>
+      <aside className="sheet" role="dialog" aria-modal="true" aria-label=${p.name+" details"}>
+        <div className="sheet-top"><span className="lbl">${p.group}</span>
+          <button type="button" className="x" aria-label="Close details" onClick=${function(){setSel(null);}}><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg></button></div>
+        <span className="pl-i" style=${{width:56,height:56,fontSize:24}}>${p.name.charAt(0)}</span>
+        <h3>${p.name}</h3>
+        ${p.img?html`<figure className="fig"><img src=${p.img} alt=${p.name}/></figure>`:null}
+        <dl>
+          <div><dt>Category</dt><dd>${p.cat}</dd></div>
+          <div><dt>Typical users</dt><dd>${p.users}</dd></div>
+          <div><dt>What it emphasizes</dt><dd>${p.emph}</dd></div>
+          <div><dt>What the category means</dt><dd className="tagx">${p.tags.map(function(t){return html`<div key=${t}><b>${t}.</b> ${TAGX[t]}</div>`;})}</dd></div>
+          <div><dt>In this group</dt><dd>${GROUPS[p.group]}</dd></div>
+        </dl>
+        <div className="note">Classification reproduces the supplied training material. Functionality depends on edition, modules, integrations and contract. Verify against current vendor documentation.</div>
+        <div className="sheet-nav"><button type="button" onClick=${function(){step(-1);}}>Previous</button><button type="button" onClick=${function(){step(1);}}>Next</button></div>
+      </aside></div>`:null}
+  </div>`;
+}
+
+function Block(p){
+  var b=p.b;
+  switch(b.t){
+    case "p": return html`<p className="pp">${b.text}</p>`;
+    case "lbl": return html`<p className="lbl">${b.text}</p>`;
+    case "note": return html`<div className=${"note"+(b.tone==="todo"?" todo":"")}>${b.text}</div>`;
+    case "answer": return html`<div className="answer"><b>Answer</b><p>${b.text}</p></div>`;
+    case "chips": return html`<div className="stack">${b.label?html`<p className="lbl">${b.label}</p>`:null}<div className="chips">${b.items.map(function(x){return html`<span className="chip" key=${x}>${x}</span>`;})}</div></div>`;
+    case "cols": return html`<div className="cols">${[b.l,b.r].map(function(c){return html`<div key=${c.title} className=${"col"+(c.tone==="warn"?" warn":"")}><h4>${c.title}</h4><ul>${c.items.map(function(x){return html`<li key=${x}>${x}</li>`;})}</ul></div>`;})}</div>`;
+    case "cards": return html`<div className="cards">${b.items.map(function(c){return html`<div key=${c.title} className=${"card"+(c.tone==="warn"?" warn":"")}><h4>${c.title}</h4><p>${c.text}</p></div>`;})}</div>`;
+    case "check": return html`<${Check} items=${b.items}/>`;
+    case "rows": return html`<div className="rows">${b.items.map(function(r){return html`<div className="row" key=${r[0]}><b>${r[0]}</b><span>${r[1]}</span></div>`;})}</div>`;
+    case "stairs": return html`<${Stairs} steps=${b.steps} proc=${true}/>`;
+    case "example": return html`<${Example} b=${b}/>`;
+    case "flips": return html`<${Flips} items=${b.items}/>`;
+    case "platforms": return html`<${Explorer}/>`;
+    case "img": return html`<figure className="fig"><img src=${b.src} alt=${b.caption||""}/>${b.caption?html`<figcaption>${b.caption}</figcaption>`:null}</figure>`;
+    default: return null;
+  }
+}
+
+function Point(p){
+  var s=p.s, open=p.open;
+  return html`<section className=${"pt"+(open?" open":"")} id=${"pt-"+s.id}>
+    <button type="button" className="pt-h" aria-expanded=${open} onClick=${p.toggle}>
+      <span className="pt-mark"></span><span className="pt-t">${s.title}</span><span className="pt-k">${s.kicker}</span><${Chev}/>
+    </button>
+    <${Collapse} open=${open}><div className="pt-body">${s.blocks.map(function(b,i){return html`<${Block} key=${i} b=${b}/>`;})}</div><//>
+  </section>`;
+}
+
+function Waves(){
+  var path="M0,60 C240,0 480,120 720,60 C960,0 1200,120 1440,60 C1680,0 1920,120 2160,60 C2400,0 2640,120 2880,60 L2880,120 L0,120 Z";
+  function layer(fill,op,d,delay,rev){
+    return html`<div className="wv" aria-hidden="true" style=${{"--d":d,animationDelay:delay,animationDirection:rev?"reverse":"normal",opacity:op}}>
+      <svg viewBox="0 0 2880 120" preserveAspectRatio="none"><path d=${path} fill=${fill}/></svg></div>`;
+  }
+  return html`<div><div className="waves">${layer("#dcf3e7",1,"30s","-8s",false)}${layer("#16a870",0.55,"21s","-4s",true)}${layer("#0a7b50",1,"14s","-11s",false)}</div>
+    <div className="wbase"><div className="wrap"><b>BPO Wizard</b><span>Database Training Document</span><span>Training Library / Phase 01</span></div></div></div>`;
+}
+
+function Footer(p){
+  var prev=p.id>1?CH[p.id-2]:null, next=p.id<TOTAL?CH[p.id]:null;
+  return html`<footer className="foot"><div className="wrap narrow"><div className="pager">
+    <button type="button" className="pg" onClick=${function(){p.go(prev?prev.id:0);}}><small>${prev?"Previous chapter":"Back"}</small><b>${prev?prev.title:"Contents"}</b></button>
+    <button type="button" className="pg next" onClick=${function(){p.go(next?next.id:0);}}><small>${next?"Next chapter":"Finished"}</small><b>${next?next.title:"Back to contents"}</b></button>
+  </div></div><${Waves}/></footer>`;
+}
+
+function Chapter(p){
+  var ch=p.ch;
+  var st=useState(function(){var o={};o[ch.sections[0].id]=true;return o;}), open=st[0], setOpen=st[1];
+  var allOpen=ch.sections.every(function(s){return open[s.id];});
+  function setAll(v){var o={};ch.sections.forEach(function(s){o[s.id]=v;});setOpen(o);}
+  function toggle(id){var o=Object.assign({},open);o[id]=!o[id];setOpen(o);}
+  var num=(ch.id<10?"0":"")+ch.id;
+  return html`<div className="page">
+    <div className="wrap narrow">
+      <div className="ch-h">
+        <div className="eyebrow"><span className="dot"></span>Chapter ${num} / ${TOTAL}</div>
+        <h2>${ch.title}</h2>
+        ${ch.sub?html`<p className="lede" style=${{fontWeight:600}}>${ch.sub}</p>`:null}
+        <p className="lede">${ch.lede}</p>
+        ${ch.intro?html`<p className="intro">${ch.intro}</p>`:null}
+      </div>
+      <div className="ch-tools"><button type="button" className="hbtn" onClick=${function(){setAll(!allOpen);}}>${allOpen?"Collapse all":"Expand all"}</button><span>${ch.sections.length} points. Tap a box to open it.</span></div>
+      <div className="pts">${ch.sections.map(function(s){return html`<${Point} key=${s.id} s=${s} open=${!!open[s.id]} toggle=${function(){toggle(s.id);}}/>`;})}</div>
+      <div className=${"take"+(ch.long?" long":"")}><small>KEY TAKEAWAY</small><p>${ch.take}</p></div>
+    </div>
+    <${Footer} id=${ch.id} go=${p.go}/>
+  </div>`;
+}
+
+function Home(p){
+  return html`<div className="page">
+    <div className="cover"><div className="wrap">
+      <div className="eyebrow"><span className="dot"></span>Training Library / Phase 01</div>
+      <h1><em>Database</em> Training Document</h1>
+      <h2>Recruiting Database & ATS/CRM Playbook</h2>
+      <p className="sub">The recruiting concept first. The recruiter workflow second. The technology that enables it third.</p>
+      <div className="pillars">
+        <div className="pillar"><small>01 / THE FOUNDATION</small><b>Structured records</b></div>
+        <div className="pillar"><small>02 / THE PRACTICE</small><b>Connected workflows</b></div>
+        <div className="pillar"><small>03 / THE ASSET</small><b>Talent relationships</b></div>
+      </div>
+      <div className="meta"><span>Project lead <b>Hasham</b></span><span>Team <b>Atif & Hani</b></span><span>10 chapters</span><span>Practical field guide</span></div>
+    </div></div>
+    <div className="wrap">
+      <div className="sec-h"><h3>Contents</h3><p>Read, reference, reuse. Start at the beginning or jump to the chapter you need.</p></div>
+      <div className="toc">${CH.map(function(c){
+        var n=(c.id<10?"0":"")+c.id;
+        return html`<button type="button" key=${c.id} className="tcard" onClick=${function(){p.go(c.id);}}>
+          <span className="tnum">${n}<i></i></span><span className="tt">${c.title}</span><span className="ts">${c.lede}</span><span className="tgo">Read chapter <span>→</span></span></button>`;
+      })}</div>
+      <div className="intro-end"><b>A better database. A stronger recruiting practice.</b><span>A practical, recruiter-focused guide to building a trusted talent asset.</span></div>
+    </div>
+    <${Waves}/>
+  </div>`;
+}
+
+function App(){
+  function fromHash(){
+    var m=/^#ch(\d+)$/.exec(window.location.hash||"");
+    var n=m?parseInt(m[1],10):0;
+    return n>=1&&n<=TOTAL?n:0;
+  }
+  var st=useState(fromHash), page=st[0], setPage=st[1];
+  var bar=useRef(null);
+  function go(n){
+    setPage(n);
+    try{window.location.hash=n?"ch"+n:"";}catch(e){}
+    window.scrollTo(0,0);
+  }
+  useEffect(function(){
+    function h(){setPage(fromHash());window.scrollTo(0,0);}
+    window.addEventListener("hashchange",h);
+    return function(){window.removeEventListener("hashchange",h);};
+  },[]);
+  useEffect(function(){
+    function s(){
+      var d=document.documentElement, max=d.scrollHeight-window.innerHeight;
+      if(bar.current)bar.current.style.width=(max>0?Math.min(100,window.scrollY/max*100):0)+"%";
+    }
+    s();
+    window.addEventListener("scroll",s,{passive:true});
+    window.addEventListener("resize",s);
+    return function(){window.removeEventListener("scroll",s);window.removeEventListener("resize",s);};
+  },[page]);
+  return html`<div>
+    <header className="hdr"><div className="wrap">
+      <button type="button" className="logo" aria-label="BPO Wizard, back to contents" onClick=${function(){go(0);}}><img src=${LOGO} alt="BPO Wizard"/></button>
+      <span className="hdr-t">${page?"Chapter "+page+" of "+TOTAL:"Database Training Document"}</span>
+      <button type="button" className="hbtn" onClick=${function(){go(0);}}>Contents</button>
+    </div><div className="prog" ref=${bar}></div></header>
+    ${page===0?html`<${Home} key="home" go=${go}/>`:html`<${Chapter} key=${"c"+page} ch=${CH[page-1]} go=${go}/>`}
+  </div>`;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(html`<${App}/>`);
+})();
+</script>
+</body>
+</html>
